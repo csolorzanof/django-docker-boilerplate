@@ -1,0 +1,29 @@
+version: '3.3'
+services:
+    db:
+      image: postgres:15.3-alpine3.18
+      restart: always
+      hostname: db
+      environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: toor
+        POSTGRES_DB: coredb
+      ports:
+          - 9432:5432        
+      volumes:
+          - ./data:/var/lib/postgresql/data/          
+
+    adminer:
+      image: adminer
+      restart: always
+      ports:
+          - 8080:8080
+
+    api:
+        build:
+            context: .
+            dockerfile: django.Dockerfile
+        ports:
+            - 9000:8000
+        volumes:
+            - ./api:/code
